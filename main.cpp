@@ -13,24 +13,6 @@
 #include "stb_image_write.h"
 #define _calc_pixel(i, j, w) (i + j * w) * 3
 
-float hit_sphere(vec3 center, float radius, ray r) {
-    vec3 a = r.a;
-    vec3 b = r.b;
-    vec3 c = center;
-    float B = dot(b, (a - c) * 2);
-    float A = dot(b, b);
-    float C = dot(a - c, a - c) - radius * radius;
-    float determinant = B * B - 4 * A * C;
-    if (determinant >= 0) {
-        return (-B - std::sqrt(determinant)) / (A * 2.0);
-    }
-    return FP_NAN;
-}
-
-float sigmoid(float t) {
-    return float(1) / (1 + std::exp(-t));
-}
-
 hitable_list list;
 camera camera;
 
