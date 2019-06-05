@@ -9,12 +9,15 @@
 #include "sphere.h"
 #include "hitable_list.h"
 #include "camera.h"
+
 #define STB_IMAGE_WRITE_IMPLEMENTATION
+
 #include "stb_image_write.h"
+
 #define _calc_pixel(i, j, w) (i + j * w) * 3
 
 hitable_list list;
-camera camera;
+camera camera({1, 1, -.2}, {0, 0, -1},90, 2);
 
 vec3 color(ray r, int depth = 0) {
     hit_record record;
@@ -33,13 +36,13 @@ vec3 color(ray r, int depth = 0) {
 int main() {
     uniform_random random;
     list.list.push_back(std::make_unique<sphere>(vec3{0, 0, -1}, 0.5, new lambertian({.5, .9, .5})));
-    list.list.push_back(std::make_unique<sphere>(vec3{0, -.1, -.2}, 0.1, new metal({.5, .5, .5})));
+    list.list.push_back(std::make_unique<sphere>(vec3{0, -.1, -.1}, 0.3, new metal({.5, .5, .5})));
     list.list.push_back(std::make_unique<sphere>(vec3{-1, 0, -1}, 0.5, new metal({.5, .5, .5}, .2)));
     list.list.push_back(std::make_unique<sphere>(vec3{1, 0, -1}, 0.5, new dielectrical(1.5)));
-    list.list.push_back(std::make_unique<sphere>(vec3{1.2, 1, -1.3}, 0.5, new metal({.3, .3, .5})));
+    list.list.push_back(std::make_unique<sphere>(vec3{.6, 1, -1.3}, 0.5, new metal({.3, .3, .5})));
     list.list.push_back(std::make_unique<sphere>(vec3{0, -100.5, -1}, 100, new lambertian({.5, .5, .5})));
-    int nx = 720, ny = 360, ns = 500;
-    auto * data = new unsigned char[nx * ny * 3];
+    int nx = 480, ny = 240, ns = 500;
+    auto *data = new unsigned char[nx * ny * 3];
     for (int j = 0; j < ny; j++) {
         for (int i = 0; i < nx; i++) {
             vec3 mean{0, 0, 0};
